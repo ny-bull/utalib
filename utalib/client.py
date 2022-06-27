@@ -71,13 +71,14 @@ def get_price_data_binance(currency: str, product: str, category: str, minute: i
             zip_name = f"{currency}-{minute}m-{year_str}-{month_str}.zip"
 
             save_folder = "data/"
+            pre_path = f"{product}_{category}_"
             res = requests.get(url + zip_name)
             if res.status_code == 404:
                 raise Exception("File doesn't exist")
             urlData = requests.get(url + zip_name).content
 
             os.makedirs(save_folder, exist_ok=True)
-            with open(save_folder + zip_name, mode="wb") as f:  # wb でバイト型を書き込める
+            with open(save_folder + pre_path + zip_name, mode="wb") as f:  # wb でバイト型を書き込める
                 f.write(urlData)
             for file_path in pathlib.Path("./" + save_folder).rglob("*"):
                 if Path.is_file(file_path):
